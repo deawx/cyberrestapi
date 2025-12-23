@@ -21,9 +21,15 @@ CyberRestAPI เป็นเฟรมเวิร์ก PHP ที่มีป�
 
 ```bash
 composer create-project deawx/cyberrestapi myapp
+cd myapp
+php -S 127.0.0.1:8081
 ```
-
-> **หมายเหตุ**: ชื่อแพ็กเกจ Composer คือ `deawx/cyberrestapi` (ตามที่ระบุในเอกสารต้นฉบับ)
+ 
+> **ทดสอบ**: ให้ลองเข้าใช้งานที่ <br>
+> [http://localhost:8081](http://localhost:8081) <br>
+> [http://localhost:8081/heal](http://localhost:8081/heal) <br>
+> [http://localhost:8081/testview](http://localhost:8081/testview)
+ 
 
 ## เอกสารประกอบ (Documentation)
 

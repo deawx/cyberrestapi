@@ -1,0 +1,26 @@
+RewriteEngine On
+
+# 1. ป้องกัน dot files และ sensitive folders
+RewriteRule (^|/)\. - [F,L]
+RewriteRule ^(vendor|Core|App|\.env|composer\.json|composer\.lock|node_modules|\.git|storage) - [F,L]
+
+# 2. ป้องกัน directory listing
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{REQUEST_FILENAME}/index\.php !-f
+RewriteCond %{REQUEST_FILENAME}/index\.html !-f
+RewriteRule ^ - [F,L]
+
+# 3. ป้องกันเข้าถึง .php โดยตรง (ยกเว้น index.php)
+RewriteCond %{REQUEST_FILENAME} \.php$
+RewriteCond %{REQUEST_URI} !^/index\.php$
+RewriteRule ^ - [F,L]
+
+# 4. Rewrite ทุก request ที่ไม่ใช่ไฟล์จริง → index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
+
+# 5. Custom error pages (optional)
+ErrorDocument 403 /Views/errors/403.php
+ErrorDocument 404 /Views/errors/404.php
+ErrorDocument 500 /Views/errors/500.php

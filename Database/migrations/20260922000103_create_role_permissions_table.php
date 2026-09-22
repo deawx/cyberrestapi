@@ -1,0 +1,27 @@
+<?php
+
+declare(strict_types=1);
+
+use Core\Blueprint;
+use Core\Migration;
+use Core\Schema;
+
+return new class extends Migration {
+    public function up(): void
+    {
+        Schema::create('role_permissions', static function (Blueprint $table): void {
+            $table->comment('ตารางเชื่อม role กับ permission (สิทธิ์ของแต่ละบทบาท)');
+            $table->id()->comment('รหัสแถว');
+            $table->foreignId('role_id', 'roles')->comment('FK ไป roles.id');
+            $table->foreignId('permission_id', 'permissions')->comment('FK ไป permissions.id');
+            $table->uniqueIndex(['role_id', 'permission_id']);
+            $table->timestamp('created_at')->nullable()->comment('วันเวลาที่สร้าง');
+            $table->timestamp('updated_at')->nullable()->comment('วันเวลาที่แก้ไขล่าสุด');
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::drop('role_permissions');
+    }
+};

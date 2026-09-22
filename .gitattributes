@@ -1,0 +1,8 @@
+*.php text eol=lf
+.php-cs-fixer.php text eol=lf
+
+# ไม่ส่งลง Composer dist / archive (create-project)
+/tests export-ignore
+/phpunit.xml export-ignore
+/phpunit.xml.dist export-ignore
+/cyberthai.png export-ignore

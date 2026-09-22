@@ -1,0 +1,36 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # 1. ป้องกันการเข้าถึง hidden files และ dot files (เช่น .htaccess, .env, .git)
+    RewriteRule (^|/)\. - [F,L]
+
+    # 2. ป้องกันการเข้าถึง sensitive folders และ files โดยตรง
+    #    (vendor, Core, App, storage, .env, composer.*, node_modules, .git)
+    RewriteRule ^(vendor|Core|App|Apps|storage|Storage|tests|Routes|\.env|composer\.json|composer\.lock|phpunit\.xml|\.php-cs-fixer\.php|node_modules|\.git)(/|$) - [F,L]
+
+    # 3. ป้องกัน directory listing (browsing) – วิธีมาตรฐานและดีที่สุด
+    #    ใช้ Options -Indexes เพื่อให้ Apache แสดง 403 Forbidden ถ้าไม่มี index file
+    Options -Indexes
+
+    # ไฟล์สาธารณะอยู่ที่ public/assets/ URL ใช้ /assets/...
+    RewriteRule ^assets/(.*)$ public/assets/$1 [L]
+    RewriteRule ^uploads/(.*)$ public/uploads/$1 [L]
+
+    # 5. Rewrite ทุก request ที่ไม่ใช่ไฟล์หรือโฟลเดอร์จริง → index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>
+
+# 6. Apache ตอบข้อความสั้น ๆ — 404/500 ของ API ให้เฟรมเวิร์กจัดการเอง
+ErrorDocument 403 "Forbidden"
+
+# 7. เพิ่มความปลอดภัยพื้นฐานอื่น ๆ (แนะนำ)
+# ป้องกันการเข้าถึง .htaccess เอง
+<Files ".htaccess">
+    Require all denied
+</Files>
+
+<FilesMatch "\.(env|log|ini|bak|old|dist|git|svn|htaccess|htpasswd)$">
+    Require all denied
+</FilesMatch>

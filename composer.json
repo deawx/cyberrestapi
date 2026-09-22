@@ -1,0 +1,77 @@
+{
+    "name": "deawx/cyberrestapi",
+    "description": "Fast PHP API Framework",
+    "type": "project",
+    "license": "MIT",
+    "homepage": "https://cyberthai.net",
+    "keywords": [
+        "php framework",
+        "rest api",
+        "restapi",
+        "php",
+        "php-api",
+        "api-framework",
+        "framework",
+        "mvc"
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "Apps/",
+            "Core\\": "Core/",
+            "Database\\": "Database/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "(deawx) Tirapong Chaiyakun",
+            "email": "msdos43@gmail.com",
+            "homepage": "https://cyberthai.net",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "ext-openssl": "*",
+        "ext-pdo": "*",
+        "catfan/medoo": "^2.1",
+        "firebase/php-jwt": "^7.0",
+        "predis/predis": "^2.2",
+        "symfony/console": "^7.1",
+        "vlucas/phpdotenv": "^5.6"
+    },
+    "require-dev": {
+        "fakerphp/faker": "^1.24",
+        "filp/whoops": "^2.15",
+        "friendsofphp/php-cs-fixer": "^3.68",
+        "phpunit/phpunit": "^10.5"
+    },
+    "bin": [
+        "deawx"
+    ],
+    "scripts": {
+        "cs-fix": "php-cs-fixer fix",
+        "cs-check": "php-cs-fixer fix --dry-run --diff",
+        "serve": "php -S 127.0.0.1:8000 bin/router.php",
+        "test": "phpunit",
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php deawx key:generate"
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

@@ -6,7 +6,7 @@
 
     # 2. ป้องกันการเข้าถึง sensitive folders และ files โดยตรง
     #    (vendor, Core, App, storage, .env, composer.*, node_modules, .git)
-    RewriteRule ^(vendor|Core|App|Apps|storage|Storage|tests|Routes|\.env|composer\.json|composer\.lock|phpunit\.xml|\.php-cs-fixer\.php|node_modules|\.git)(/|$) - [F,L]
+    RewriteRule ^(vendor|Core|App|Apps|bin|storage|Storage|tests|Routes|\.env|composer\.json|composer\.lock|phpunit\.xml|\.php-cs-fixer\.php|node_modules|\.git)(/|$) - [F,L]
 
     # 3. ป้องกัน directory listing (browsing) – วิธีมาตรฐานและดีที่สุด
     #    ใช้ Options -Indexes เพื่อให้ Apache แสดง 403 Forbidden ถ้าไม่มี index file

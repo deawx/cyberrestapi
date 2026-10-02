@@ -51,6 +51,9 @@ php deawx db:create     # สร้างเฉพาะฐาน ไม่ migr
 - `/assets/...` → `public/assets/`
 - `/uploads/...` → `public/uploads/`
 
+`.htaccess` ที่ root บล็อกการเปิด `vendor` / `Core` / `Apps` / `bin` / `Storage` / `tests` / `Routes` ทางเว็บ  
+ใน `bin/` มี `.htaccess` (`Require all denied`) เพิ่มอีกชั้น — ไม่กระทบ `composer serve`
+
 ## รันด้วย PHP built-in server
 
 ```bash

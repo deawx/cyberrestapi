@@ -216,13 +216,20 @@ final class Blueprint
         return $this->addColumn($name, $precision > 0 ? 'TIMESTAMP(' . $precision . ')' : 'TIMESTAMP');
     }
 
+    /**
+     * created_at / updated_at — MySQL/MariaDB ใส่เวลาให้อัตโนมัติ
+     * softDeletes() คนละเรื่อง: deleted_at ต้องเป็น NULL จนกว่าแอปจะ soft delete
+     */
     public function timestamps(int $precision = 0): static
     {
         $this->flush();
         $this->expectIdComment = false;
-        $type = $precision > 0 ? 'TIMESTAMP(' . max(0, min(6, $precision)) . ')' : 'TIMESTAMP';
-        $this->columns['created_at'] = [$type, 'NULL'];
-        $this->columns['updated_at'] = [$type, 'NULL'];
+        $precision = max(0, min(6, $precision));
+        $type = $precision > 0 ? 'TIMESTAMP(' . $precision . ')' : 'TIMESTAMP';
+        $current = $precision > 0 ? 'CURRENT_TIMESTAMP(' . $precision . ')' : 'CURRENT_TIMESTAMP';
+
+        $this->columns['created_at'] = [$type, 'NULL', 'DEFAULT ' . $current];
+        $this->columns['updated_at'] = [$type, 'NULL', 'DEFAULT ' . $current, 'ON UPDATE ' . $current];
 
         return $this;
     }
@@ -606,7 +613,14 @@ final class Blueprint
             return (string) $value;
         }
 
-        return "'" . str_replace("'", "''", (string) $value) . "'";
+        $raw = (string) $value;
+        if (preg_match('/^CURRENT_TIMESTAMP(?:\(([0-6])\))?$/i', $raw, $matches) === 1) {
+            return isset($matches[1])
+                ? 'CURRENT_TIMESTAMP(' . $matches[1] . ')'
+                : 'CURRENT_TIMESTAMP';
+        }
+
+        return "'" . str_replace("'", "''", $raw) . "'";
     }
 
     /**

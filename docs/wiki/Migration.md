@@ -95,8 +95,8 @@ return new class extends Migration {
 | `boolean` | `TINYINT(1)` |
 | `decimal` / `float` / `double` | ทศนิยม |
 | `date` / `dateTime` / `time` / `year` / `timestamp` | วันเวลา |
-| `timestamps()` | `created_at` + `updated_at` |
-| `softDeletes()` | `deleted_at` ว่างได้ |
+| `timestamps()` | `created_at` / `updated_at` — `DEFAULT CURRENT_TIMESTAMP` และ `updated_at` มี `ON UPDATE CURRENT_TIMESTAMP` (รองรับ seed/Medoo นอก Model) |
+| `softDeletes()` | `deleted_at` เป็น `NULL` อย่างเดียว ไม่มี default / on update — แอปใส่เวลาตอน soft delete |
 | `binary` / `varbinary` / `blob` / `tinyBlob` / `mediumBlob` / `longBlob` | ไบนารี |
 | `enum('status', ['a','b'])` / `set(...)` | `ENUM` / `SET` |
 | `uuid` / `ulid` | `CHAR(36)` / `CHAR(26)` |

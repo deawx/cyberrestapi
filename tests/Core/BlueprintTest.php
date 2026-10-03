@@ -23,8 +23,42 @@ final class BlueprintTest extends TestCase
         $this->assertSame('@id', $columns[0]);
         $this->assertSame(['VARCHAR(191)', 'NOT NULL', 'UNIQUE'], $columns['email']);
         $this->assertSame(['VARCHAR(255)', 'NULL'], $columns['name']);
-        $this->assertSame(['TIMESTAMP', 'NULL'], $columns['created_at']);
-        $this->assertSame(['TIMESTAMP', 'NULL'], $columns['updated_at']);
+        $this->assertSame(
+            ['TIMESTAMP', 'NULL', 'DEFAULT CURRENT_TIMESTAMP'],
+            $columns['created_at'],
+        );
+        $this->assertSame(
+            ['TIMESTAMP', 'NULL', 'DEFAULT CURRENT_TIMESTAMP', 'ON UPDATE CURRENT_TIMESTAMP'],
+            $columns['updated_at'],
+        );
+    }
+
+    public function testTimestampsWithPrecision(): void
+    {
+        $table = new Blueprint();
+        $table->timestamps(3);
+        $columns = $table->toColumns();
+
+        $this->assertSame(
+            ['TIMESTAMP(3)', 'NULL', 'DEFAULT CURRENT_TIMESTAMP(3)'],
+            $columns['created_at'],
+        );
+        $this->assertSame(
+            ['TIMESTAMP(3)', 'NULL', 'DEFAULT CURRENT_TIMESTAMP(3)', 'ON UPDATE CURRENT_TIMESTAMP(3)'],
+            $columns['updated_at'],
+        );
+    }
+
+    public function testDefaultCurrentTimestampUnquoted(): void
+    {
+        $table = new Blueprint();
+        $table->timestamp('synced_at')->nullable()->default('CURRENT_TIMESTAMP');
+        $columns = $table->toColumns();
+
+        $this->assertSame(
+            ['TIMESTAMP', 'NULL', 'DEFAULT CURRENT_TIMESTAMP'],
+            $columns['synced_at'],
+        );
     }
 
     public function testCompileForeignKeys(): void

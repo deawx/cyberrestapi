@@ -38,7 +38,8 @@ $user->toArray();
 
 `where` / `getWhere` รับเฉพาะชื่อคอลัมน์ `[A-Za-z_][A-Za-z0-9_]*` ไม่รับ operator จากผู้ใช้ตรง ๆ
 
-ถ้า `$timestamps = true` ระบบใส่ `created_at` / `updated_at` ตอนบันทึก
+ถ้า `$timestamps = true` ระบบใส่ `created_at` / `updated_at` ตอนบันทึกด้วย PHP  
+ชั้น schema จาก `timestamps()` ก็มี `DEFAULT CURRENT_TIMESTAMP` / `ON UPDATE` อยู่แล้ว — seed หรือ Medoo insert โดยไม่ส่งเวลายังได้ค่าอัตโนมัติ
 
 ## ตัดหน้า
 
